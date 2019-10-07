@@ -36,4 +36,21 @@
         android:text="" />
 
 
+    <Button
+        android:id="@+id/restButton"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="START" />
+
+    <TextView
+        android:gravity="center"
+        android:textSize="32dp"
+        android:id="@+id/restTextView"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="" />
+
+
 </LinearLayout>

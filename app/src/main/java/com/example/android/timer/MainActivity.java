@@ -14,11 +14,18 @@ public class MainActivity extends AppCompatActivity {
 
     TextView textView;
 
+    TextView restTextView;
+
     Button button;
 
+    Button restButton;
+
     boolean clockIsRunning = false;
+    boolean restClockIsRunning = false;
 
     int savedTime = 0;
+
+    int savedRestTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
         editText = (EditText) findViewById(R.id.editText);
         button = (Button) findViewById(R.id.button);
+        restButton = (Button) findViewById(R.id.restButton);
         textView = (TextView) findViewById(R.id.textView);
+        restTextView = (TextView) findViewById(R.id.restTextView);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +85,63 @@ public class MainActivity extends AppCompatActivity {
                             if (clockIsRunning == true){
                                 savedTime = (int)millisUntilFinished;
                                 button.setText("Start");
+                                cancel();
+                            }
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            textView.setText("Congratulations! You've Finished Your Motherfuckin Work Week!");
+                        }
+                    }.start();
+                }
+            }
+        });
+
+        //Rest Button
+        restButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Checks if the clock is currently running
+                if (restButton.getText() == "Pause"){
+                    restClockIsRunning = true;
+                }
+
+//                 Checks if timer has been canceled
+                if (restButton.getText() == "Start"){
+                    restClockIsRunning = false;
+                }
+
+                restButton.setText("Pause");
+
+                if(restClockIsRunning == false){
+
+                    // Set work Hours
+                    int restHours = 56 * 3600000;
+
+                    if (savedRestTime != 0){
+                        restHours = savedRestTime;
+                    }
+
+
+                    CountDownTimer countDownTimer = new CountDownTimer(restHours,1000) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+
+                            //Translate Hours/Min/Seconds from millis
+                            int h = (int) ((millisUntilFinished/(1000*60*60)));
+                            int s = (int)(millisUntilFinished/1000) % 60;
+                            int m = (int)(millisUntilFinished/(1000*60)) % 60;
+
+                            //Print Time Remaining
+                            restTextView.setText("Rest Hours Remaining: \n" + h + "h " + m + "m " + s + "s" );
+
+
+                            //Check if clock is already running
+                            if (restClockIsRunning == true){
+                                savedRestTime = (int)millisUntilFinished;
+                                restButton.setText("Start");
                                 cancel();
                             }
                         }
