@@ -3,6 +3,7 @@ package com.example.android.timer;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,14 +12,16 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     EditText editText;
+    EditText editWorkText;
+    EditText editRestText;
 
     TextView textView;
-
     TextView restTextView;
 
     Button button;
-
     Button restButton;
+    Button editWorkButton;
+    Button editRestButton;
 
     boolean clockIsRunning = false;
     boolean restClockIsRunning = false;
@@ -33,8 +36,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         editText = (EditText) findViewById(R.id.editText);
+        editWorkText = (EditText) findViewById(R.id.editWorkText);
+        editRestText = (EditText) findViewById(R.id.editRestText);
+
         button = (Button) findViewById(R.id.button);
         restButton = (Button) findViewById(R.id.restButton);
+        editWorkButton = (Button) findViewById(R.id.editWorkButton);
+        editRestButton = (Button) findViewById(R.id.editRestButton);
+
+
         textView = (TextView) findViewById(R.id.textView);
         restTextView = (TextView) findViewById(R.id.restTextView);
 
@@ -154,5 +164,41 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        editWorkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (editWorkButton.getText().toString().equalsIgnoreCase("Edit Work Time")){
+                    editWorkButton.setText("Set New Work Time");
+                    editWorkText.setVisibility(View.VISIBLE);
+                } else if (editWorkButton.getText().toString().equalsIgnoreCase("Set New Work Time")){
+                    String tempText = editWorkText.getText().toString();
+                    Log.d("tempText", tempText);
+                    savedTime = Integer.valueOf(tempText) * 3600000;
+                    editWorkButton.setText("Edit Work Time");
+                    editWorkText.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        });
+
+        editRestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (editRestButton.getText().toString().equalsIgnoreCase("Edit Rest Time")){
+                    editRestButton.setText("Set New Rest Time");
+                    editRestText.setVisibility(View.VISIBLE);
+                } else if (editRestButton.getText().toString().equalsIgnoreCase("Set New Rest Time")){
+                    String tempText = editRestText.getText().toString();
+                    savedRestTime = Integer.valueOf(tempText) * 3600000;
+                    editRestButton.setText("Edit Rest Time");
+                    editRestText.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+
     }
 }
