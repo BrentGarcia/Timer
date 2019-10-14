@@ -1,88 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="16dp"
-    android:paddingTop="16dp"
-    android:paddingRight="16dp"
-    android:paddingLeft="16dp"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <EditText
-        android:id="@+id/editText"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Hours"
-        android:inputType="numberDecimal" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="START" />
-
-    <TextView
-        android:gravity="center"
-        android:textSize="32dp"
-        android:id="@+id/textView"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="" />
+        android:layout_height="match_parent"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
 
 
-    <Button
-        android:id="@+id/restButton"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="START" />
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Hours"
+                android:inputType="numberDecimal" />
 
-    <TextView
-        android:gravity="center"
-        android:textSize="32dp"
-        android:id="@+id/restTextView"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="" />
+            <Button
+                android:id="@+id/button"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="START" />
 
-    <EditText
-        android:id="@+id/editWorkText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Hours"
-        android:visibility="invisible"
-        android:inputType="numberDecimal" />
-
-    <Button
-        android:id="@+id/editWorkButton"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Edit Work Time" />
-
-    <EditText
-        android:id="@+id/editRestText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Hours"
-        android:visibility="invisible"
-        android:inputType="numberDecimal" />
-
-    <Button
-        android:id="@+id/editRestButton"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Edit Rest Time" />
+            <TextView
+                android:gravity="center"
+                android:textSize="32dp"
+                android:id="@+id/textView"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
 
 
-</LinearLayout>
+            <Button
+                android:id="@+id/restButton"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="START" />
+
+            <TextView
+                android:gravity="center"
+                android:textSize="32dp"
+                android:id="@+id/restTextView"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <EditText
+                android:id="@+id/editWorkText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Hours"
+                android:visibility="invisible"
+                android:inputType="numberDecimal" />
+
+            <Button
+                android:id="@+id/editWorkButton"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit Work Time" />
+
+            <EditText
+                android:id="@+id/editRestText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Hours"
+                android:visibility="invisible"
+                android:inputType="numberDecimal" />
+
+            <Button
+                android:id="@+id/editRestButton"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit Rest Time" />
+
+            <TextView
+                android:gravity="center"
+                android:textSize="32dp"
+                android:id="@+id/freeTextView"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+
+    </LinearLayout>
+</ScrollView>
