@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editText;
     EditText editWorkText;
     EditText editRestText;
+    EditText editFreeText;
 
     TextView textView;
     TextView restTextView;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     Button restButton;
     Button editWorkButton;
     Button editRestButton;
+    Button editFreeButton;
 
     boolean clockIsRunning = false;
     boolean restClockIsRunning = false;
@@ -31,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int REST_HOURS_IN_WEEK = 56 * 3600000;
 
     int savedTime = 0;
-    int freeHours = 0;
     int savedRestTime = 0;
     int savedFreeTime = 0;
 
@@ -43,11 +44,13 @@ public class MainActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.editText);
         editWorkText = (EditText) findViewById(R.id.editWorkText);
         editRestText = (EditText) findViewById(R.id.editRestText);
+        editFreeText = (EditText) findViewById(R.id.editFreeText);
 
         button = (Button) findViewById(R.id.button);
         restButton = (Button) findViewById(R.id.restButton);
         editWorkButton = (Button) findViewById(R.id.editWorkButton);
         editRestButton = (Button) findViewById(R.id.editRestButton);
+        editFreeButton = (Button) findViewById(R.id.editFreeButton);
 
 
         textView = (TextView) findViewById(R.id.textView);
@@ -70,18 +73,16 @@ public class MainActivity extends AppCompatActivity {
 
                 button.setText("Pause");
                 String text = editText.getText().toString();
-                int workHours = Integer.valueOf(text) * 3600000;
-//                int freeHours = HOURS_IN_WEEK - workHours;
 
-                if(!text.equalsIgnoreCase("") && (clockIsRunning == false)){
+                if((text.length() > 0) && (clockIsRunning == false)){
 
                     // Set work Hours
                     int hours = Integer.valueOf(text) * 3600000;
-                    freeHours = HOURS_IN_WEEK - hours - REST_HOURS_IN_WEEK;
 
-                    if (savedTime != 0){
+                    if (savedTime == 0) {
+                        savedFreeTime = HOURS_IN_WEEK - hours - REST_HOURS_IN_WEEK;
+                    } else if (savedTime != 0) {
                         hours = savedTime;
-                        freeHours = savedFreeTime;
                     }
 
 
@@ -101,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
                             //Check if clock is already running
                             if (clockIsRunning == true){
                                 savedTime = (int)millisUntilFinished;
-                                startFreeTimer(freeHours);
                                 button.setText("Start");
+                                startFreeTimer(savedFreeTime);
                                 cancel();
                             }
                         }
@@ -140,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
 
                     if (savedRestTime != 0){
                         restHours = savedRestTime;
-                        freeHours = savedFreeTime;
                     }
 
 
@@ -157,11 +157,12 @@ public class MainActivity extends AppCompatActivity {
                             restTextView.setText("Rest Hours Remaining: \n" + h + "h " + m + "m " + s + "s" );
 
 
+
                             //Check if clock is already running
                             if (restClockIsRunning == true){
                                 savedRestTime = (int)millisUntilFinished;
-                                startFreeTimer(freeHours);
                                 restButton.setText("Start");
+                                startFreeTimer(savedFreeTime);
                                 cancel();
                             }
                         }
@@ -189,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
                     editWorkButton.setText("Edit Work Time");
                     editWorkText.setVisibility(View.INVISIBLE);
                 }
-
             }
         });
 
@@ -205,6 +205,22 @@ public class MainActivity extends AppCompatActivity {
                     savedRestTime = Integer.valueOf(tempText) * 3600000;
                     editRestButton.setText("Edit Rest Time");
                     editRestText.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        editFreeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editFreeButton.getText().toString().equalsIgnoreCase("Edit Free Time")){
+                    editFreeButton.setText("Set New Free Time");
+                    editFreeText.setVisibility(View.VISIBLE);
+                } else if (editFreeButton.getText().toString().equalsIgnoreCase("Set New Free Time")){
+                    String tempText = editFreeText.getText().toString();
+                    savedFreeTime = Integer.valueOf(tempText) * 3600000;
+                    Log.d("tempText", tempText);
+                    editFreeButton.setText("Edit Free Time");
+                    editFreeText.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -229,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
                     savedFreeTime = (int) millisUntilFinished;
                     cancel();
                 }
-
             }
 
             @Override
