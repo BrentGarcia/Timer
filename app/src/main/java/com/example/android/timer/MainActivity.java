@@ -41,67 +41,38 @@ public class MainActivity extends AppCompatActivity {
         editRestButton = (Button) findViewById(R.id.editRestButton);
         editFreeButton = (Button) findViewById(R.id.editFreeButton);
 
-
         workTextView = (TextView) findViewById(R.id.workTextView);
         restTextView = (TextView) findViewById(R.id.restTextView);
         freeTextView = (TextView) findViewById(R.id.freeTextView);
 
+        //Start Button
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // Checks if the clock is currently running
+                // Checks if the clock is currently running or is paused
                 if (startButton.getText() == "Pause"){
                     clockIsRunning = true;
-                }
-
-                // Checks if timer has been canceled
-                if (startButton.getText() == "Start"){
+                } else if (startButton.getText() == "Start"){
                     clockIsRunning = false;
                 }
 
                 startButton.setText("Pause");
-                String text = editStartText.getText().toString();
+                String startTimeText = editStartText.getText().toString();
 
-                if((text.length() > 0) && (clockIsRunning == false)){
+                if((startTimeText.length() > 0) && (clockIsRunning == false)){
 
-                    // Set work Hours
-                    int hours = Integer.valueOf(text) * 3600000;
+                    // convert intial work hours
+                    int workHours = Integer.valueOf(startTimeText) * 3600000;
 
+                    // Set free hours on first click & save work hours after that
                     if (savedWorkTime == 0) {
-                        savedFreeTime = HOURS_IN_WEEK - hours - REST_HOURS_IN_WEEK;
+                        savedFreeTime = HOURS_IN_WEEK - workHours - REST_HOURS_IN_WEEK;
                     } else if (savedWorkTime != 0) {
-                        hours = savedWorkTime;
+                        workHours = savedWorkTime;
                     }
 
-
-                    CountDownTimer countDownTimer = new CountDownTimer(hours,1000) {
-                        @Override
-                        public void onTick(long millisUntilFinished) {
-
-                            //Translate Hours/Min/Seconds from millis
-                            int h = (int) ((millisUntilFinished/(1000*60*60)));
-                            int s = (int)(millisUntilFinished/1000) % 60;
-                            int m = (int)(millisUntilFinished/(1000*60)) % 60;
-
-                            //Print Time Remaining
-                            workTextView.setText("Work Week Hours Remaining: \n" + h + "h " + m + "m " + s + "s" );
-
-
-                            //Check if clock is already running
-                            if (clockIsRunning == true){
-                                savedWorkTime = (int)millisUntilFinished;
-                                startButton.setText("Start");
-                                startFreeTimer(savedFreeTime);
-                                cancel();
-                            }
-                        }
-
-                        @Override
-                        public void onFinish() {
-                            workTextView.setText("Congratulations! You've Finished Your Motherfuckin Work Week!");
-                        }
-                    }.start();
+                    // start work timer!
+                    startWorkTimer(workHours);
                 }
             }
         });
@@ -111,56 +82,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Checks if the clock is currently running
+                // Checks if the clock is currently running or paused
                 if (restButton.getText() == "Pause"){
                     restClockIsRunning = true;
-                }
-
-//                 Checks if timer has been canceled
-                if (restButton.getText() == "Start"){
+                } else if (restButton.getText() == "Start"){
                     restClockIsRunning = false;
                 }
 
                 restButton.setText("Pause");
 
                 if(restClockIsRunning == false){
-
-                    // Set work Hours
+                    // Set rest hours or load remaining rest hours
                     int restHours = 56 * 3600000;
-
                     if (savedRestTime != 0){
                         restHours = savedRestTime;
                     }
 
-
-                    CountDownTimer countDownTimer = new CountDownTimer(restHours,1000) {
-                        @Override
-                        public void onTick(long millisUntilFinished) {
-
-                            //Translate Hours/Min/Seconds from millis
-                            int h = (int) ((millisUntilFinished/(1000*60*60)));
-                            int s = (int)(millisUntilFinished/1000) % 60;
-                            int m = (int)(millisUntilFinished/(1000*60)) % 60;
-
-                            //Print Time Remaining
-                            restTextView.setText("Rest Hours Remaining: \n" + h + "h " + m + "m " + s + "s" );
-
-
-
-                            //Check if clock is already running
-                            if (restClockIsRunning == true){
-                                savedRestTime = (int)millisUntilFinished;
-                                restButton.setText("Start");
-                                startFreeTimer(savedFreeTime);
-                                cancel();
-                            }
-                        }
-
-                        @Override
-                        public void onFinish() {
-                            restTextView.setText("No more rest time!");
-                        }
-                    }.start();
+                    // start rest timer!
+                    startRestTimer(restHours);
                 }
             }
         });
@@ -168,13 +107,11 @@ public class MainActivity extends AppCompatActivity {
         editWorkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (editWorkButton.getText().toString().equalsIgnoreCase("Edit Work Time")){
+                if (editWorkButton.getText().equals("Edit Work Time")){
                     editWorkButton.setText("Set New Work Time");
                     editWorkText.setVisibility(View.VISIBLE);
-                } else if (editWorkButton.getText().toString().equalsIgnoreCase("Set New Work Time")){
+                } else if (editWorkButton.getText().equals("Set New Work Time")){
                     String tempText = editWorkText.getText().toString();
-                    Log.d("tempText", tempText);
                     savedWorkTime = Integer.valueOf(tempText) * 3600000;
                     editWorkButton.setText("Edit Work Time");
                     editWorkText.setVisibility(View.INVISIBLE);
@@ -185,11 +122,10 @@ public class MainActivity extends AppCompatActivity {
         editRestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (editRestButton.getText().toString().equalsIgnoreCase("Edit Rest Time")){
+                if (editRestButton.getText().equals("Edit Rest Time")){
                     editRestButton.setText("Set New Rest Time");
                     editRestText.setVisibility(View.VISIBLE);
-                } else if (editRestButton.getText().toString().equalsIgnoreCase("Set New Rest Time")){
+                } else if (editRestButton.getText().equals("Set New Rest Time")){
                     String tempText = editRestText.getText().toString();
                     savedRestTime = Integer.valueOf(tempText) * 3600000;
                     editRestButton.setText("Edit Rest Time");
@@ -213,8 +149,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
+    } // END OF PROGRAM
 
+    // Starts Free Timer
     private void startFreeTimer(int freeHours) {
         CountDownTimer countDownTimer = new CountDownTimer(freeHours,1000) {
             @Override
@@ -239,6 +176,66 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 freeTextView.setText("No More play time!");
+            }
+        }.start();
+    }
+
+    //Starts work timer
+    private void startWorkTimer(int workHours){
+        CountDownTimer countDownTimer = new CountDownTimer(workHours,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                //Translate Hours/Min/Seconds from millis
+                int h = (int) ((millisUntilFinished/(1000*60*60)));
+                int s = (int)(millisUntilFinished/1000) % 60;
+                int m = (int)(millisUntilFinished/(1000*60)) % 60;
+
+                //Print Time Remaining
+                workTextView.setText("Work Week Hours Remaining: \n" + h + "h " + m + "m " + s + "s" );
+
+                //Check if clock is already running
+                if (clockIsRunning == true){
+                    savedWorkTime = (int)millisUntilFinished;
+                    startButton.setText("Start");
+                    startFreeTimer(savedFreeTime);
+                    cancel();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                workTextView.setText("Congratulations! You've Finished Your Motherfuckin Work Week!");
+            }
+        }.start();
+    }
+
+    //Starts rest timer
+    private void startRestTimer(int restHours) {
+        CountDownTimer countDownTimer = new CountDownTimer(restHours,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                //Translate Hours/Min/Seconds from millis
+                int h = (int) ((millisUntilFinished/(1000*60*60)));
+                int s = (int)(millisUntilFinished/1000) % 60;
+                int m = (int)(millisUntilFinished/(1000*60)) % 60;
+
+                //Print Time Remaining
+                restTextView.setText("Rest Hours Remaining: \n" + h + "h " + m + "m " + s + "s" );
+
+                //Check if clock is already running
+                if (restClockIsRunning == true){
+                    savedRestTime = (int)millisUntilFinished;
+                    restButton.setText("Start");
+                    startFreeTimer(savedFreeTime);
+                    cancel();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                restTextView.setText("No more rest time!");
             }
         }.start();
     }
