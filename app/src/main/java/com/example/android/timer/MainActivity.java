@@ -11,20 +11,11 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText editText;
-    EditText editWorkText;
-    EditText editRestText;
-    EditText editFreeText;
+    EditText editStartText, editWorkText, editRestText, editFreeText;
 
-    TextView textView;
-    TextView restTextView;
-    TextView freeTextView;
+    TextView workTextView, restTextView, freeTextView;
 
-    Button button;
-    Button restButton;
-    Button editWorkButton;
-    Button editRestButton;
-    Button editFreeButton;
+    Button startButton, restButton, editWorkButton, editRestButton, editFreeButton;
 
     boolean clockIsRunning = false;
     boolean restClockIsRunning = false;
@@ -41,38 +32,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editText = (EditText) findViewById(R.id.editText);
+        editStartText = (EditText) findViewById(R.id.editStartText);
         editWorkText = (EditText) findViewById(R.id.editWorkText);
         editRestText = (EditText) findViewById(R.id.editRestText);
         editFreeText = (EditText) findViewById(R.id.editFreeText);
 
-        button = (Button) findViewById(R.id.button);
+        startButton = (Button) findViewById(R.id.startButton);
         restButton = (Button) findViewById(R.id.restButton);
         editWorkButton = (Button) findViewById(R.id.editWorkButton);
         editRestButton = (Button) findViewById(R.id.editRestButton);
         editFreeButton = (Button) findViewById(R.id.editFreeButton);
 
 
-        textView = (TextView) findViewById(R.id.textView);
+        workTextView = (TextView) findViewById(R.id.workTextView);
         restTextView = (TextView) findViewById(R.id.restTextView);
         freeTextView = (TextView) findViewById(R.id.freeTextView);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 // Checks if the clock is currently running
-                if (button.getText() == "Pause"){
+                if (startButton.getText() == "Pause"){
                     clockIsRunning = true;
                 }
 
                 // Checks if timer has been canceled
-                if (button.getText() == "Start"){
+                if (startButton.getText() == "Start"){
                     clockIsRunning = false;
                 }
 
-                button.setText("Pause");
-                String text = editText.getText().toString();
+                startButton.setText("Pause");
+                String text = editStartText.getText().toString();
 
                 if((text.length() > 0) && (clockIsRunning == false)){
 
@@ -96,13 +87,13 @@ public class MainActivity extends AppCompatActivity {
                             int m = (int)(millisUntilFinished/(1000*60)) % 60;
 
                             //Print Time Remaining
-                            textView.setText("Work Week Hours Remaining: \n" + h + "h " + m + "m " + s + "s" );
+                            workTextView.setText("Work Week Hours Remaining: \n" + h + "h " + m + "m " + s + "s" );
 
 
                             //Check if clock is already running
                             if (clockIsRunning == true){
                                 savedTime = (int)millisUntilFinished;
-                                button.setText("Start");
+                                startButton.setText("Start");
                                 startFreeTimer(savedFreeTime);
                                 cancel();
                             }
@@ -110,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFinish() {
-                            textView.setText("Congratulations! You've Finished Your Motherfuckin Work Week!");
+                            workTextView.setText("Congratulations! You've Finished Your Motherfuckin Work Week!");
                         }
                     }.start();
                 }
@@ -241,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
                 savedFreeTime = (int) millisUntilFinished;
                 //Check if clock is already running
-                if (button.getText() == "Pause" || restButton.getText() == "Pause") {
+                if (startButton.getText() == "Pause" || restButton.getText() == "Pause") {
                     savedFreeTime = (int) millisUntilFinished;
                     cancel();
                 }
