@@ -23,9 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int HOURS_IN_WEEK = 168 * 3600000;
     private static final int REST_HOURS_IN_WEEK = 56 * 3600000;
 
-    int savedTime = 0;
-    int savedRestTime = 0;
-    int savedFreeTime = 0;
+    int savedWorkTime = 0, savedRestTime = 0, savedFreeTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
                     // Set work Hours
                     int hours = Integer.valueOf(text) * 3600000;
 
-                    if (savedTime == 0) {
+                    if (savedWorkTime == 0) {
                         savedFreeTime = HOURS_IN_WEEK - hours - REST_HOURS_IN_WEEK;
-                    } else if (savedTime != 0) {
-                        hours = savedTime;
+                    } else if (savedWorkTime != 0) {
+                        hours = savedWorkTime;
                     }
 
 
@@ -92,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
                             //Check if clock is already running
                             if (clockIsRunning == true){
-                                savedTime = (int)millisUntilFinished;
+                                savedWorkTime = (int)millisUntilFinished;
                                 startButton.setText("Start");
                                 startFreeTimer(savedFreeTime);
                                 cancel();
@@ -177,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (editWorkButton.getText().toString().equalsIgnoreCase("Set New Work Time")){
                     String tempText = editWorkText.getText().toString();
                     Log.d("tempText", tempText);
-                    savedTime = Integer.valueOf(tempText) * 3600000;
+                    savedWorkTime = Integer.valueOf(tempText) * 3600000;
                     editWorkButton.setText("Edit Work Time");
                     editWorkText.setVisibility(View.INVISIBLE);
                 }
